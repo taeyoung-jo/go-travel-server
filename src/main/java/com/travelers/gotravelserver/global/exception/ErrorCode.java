@@ -11,6 +11,7 @@ public enum ErrorCode {
 	DUPLICATED_EMAIL(400, "이미 사용 중인 이메일입니다."),
 	USER_NOT_FOUND(404, "존재하지 않는 회원입니다."),
 	NO_AUTHORITY(403, "권한이 없습니다."),
+	INVALID_PASSWORD(400, "비밀번호가 틀렸습니다."),
 
 	// 항공 관련
 	FLIGHT_NOT_FOUND(404, "존재하지 않는 항공편입니다."),
