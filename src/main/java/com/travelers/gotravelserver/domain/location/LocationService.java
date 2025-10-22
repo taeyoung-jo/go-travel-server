@@ -34,8 +34,9 @@ public class LocationService {
 	}
 
 	// 지역 + 도시로 정확히 조회
-	public List<Location> getLocationsByRegionAndCity(String region, String city) {
-		return locationRepository.findByRegionAndCity(region, city);
+	public Location getLocationsByRegionAndCity(String region, String city) {
+		return locationRepository.findByRegionAndCity(region, city)
+			.orElseThrow(() -> new CustomException(ErrorCode.LOCATION_NOT_FOUND));
 	}
 
 	// 전체 조회

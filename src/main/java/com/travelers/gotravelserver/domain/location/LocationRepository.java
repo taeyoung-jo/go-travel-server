@@ -1,6 +1,7 @@
 package com.travelers.gotravelserver.domain.location;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -12,5 +13,5 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
 
 	List<Location> findByCity(String city);
 
-	List<Location> findByRegionAndCity(String region, String city);
+	Optional<Location> findByRegionAndCity(String region, String city);
 }
