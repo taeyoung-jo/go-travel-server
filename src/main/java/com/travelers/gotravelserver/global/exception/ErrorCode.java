@@ -13,7 +13,10 @@ public enum ErrorCode {
 	NO_AUTHORITY(403, "권한이 없습니다."),
 
 	// 항공 관련
-	FLIGHT_NOT_FOUND(404, "존재하지 않는 항공편입니다.");
+	FLIGHT_NOT_FOUND(404, "존재하지 않는 항공편입니다."),
+
+	// 지역 관련
+	LOCATION_NOT_FOUND(404, "존재하지 않는 여행지입니다.");
 
 	public final int status;
 	@Getter
