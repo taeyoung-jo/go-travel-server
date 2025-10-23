@@ -5,7 +5,8 @@
 
 USE test;
 
--- 1. 임시 테이블 생성
+-- 1. 기존 임시 테이블 제거 후 새로 생성
+DROP TABLE IF EXISTS temp_flights;
 CREATE TABLE IF NOT EXISTS temp_flights
 (
     flight_number VARCHAR(255),
@@ -27,7 +28,7 @@ LOAD DATA LOCAL INFILE 'src/main/resources/db/import/flights_data_updated.csv'
     (flight_number, airline, dept_time, arrival_time, price, destination);
 
 -- 3. flights 테이블로 데이터 삽입
-INSERT INTO flights (location_id, flight_number, airline, dept_time, arrival_time, price)
+INSERT IGNORE INTO flights (location_id, flight_number, airline, dept_time, arrival_time, price)
 SELECT l.id,
        t.flight_number,
        t.airline,

@@ -1,4 +1,4 @@
-INSERT INTO locations (region, city)
+INSERT IGNORE INTO locations (region, city)
 VALUES ('일본', '북해도'),
        ('일본', '후쿠오카'),
        ('일본', '오사카/교토/고베'),
