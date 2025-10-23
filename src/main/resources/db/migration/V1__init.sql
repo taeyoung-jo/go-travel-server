@@ -3,7 +3,7 @@
 --  초기 테이블 생성
 -- ==========================================
 
-CREATE DATABASE IF NOT EXISTS test;
+CREATE DATABASE IF NOT EXISTS test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE test;
 
 CREATE TABLE locations
