@@ -1,6 +1,7 @@
 package com.travelers.gotravelserver.domain.user;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -57,10 +58,10 @@ public class UserService {
 			.orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
 		User updated = user.toBuilder()
-			.phone(req.getPhone() != null ? req.getPhone() : user.getPhone())
-			.password(req.getPassword() != null
-				? passwordEncoder.encode(req.getPassword())
-				: user.getPassword())
+			.phone(Optional.ofNullable(req.getPhone()).orElse(user.getPhone()))
+			.password(Optional.ofNullable(req.getPassword())
+				.map(passwordEncoder::encode)
+				.orElse(user.getPassword()))
 			.build();
 
 		User saved = userRepository.save(updated);
