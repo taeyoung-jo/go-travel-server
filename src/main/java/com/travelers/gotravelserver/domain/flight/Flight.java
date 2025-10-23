@@ -14,7 +14,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,11 +36,9 @@ public class Flight {
 	private Location location;
 
 	@Column(name = "flight_number", nullable = false)
-	@NotBlank
 	private String flightNumber; // 항공편명
 
 	@Column(name = "airline", nullable = false)
-	@NotBlank
 	private String airline; // 항공사
 
 	@Column(name = "dept_time", nullable = false)
