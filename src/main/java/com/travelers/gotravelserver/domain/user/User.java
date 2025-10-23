@@ -1,5 +1,7 @@
 package com.travelers.gotravelserver.domain.user;
 
+import org.hibernate.annotations.SQLDelete;
+
 import com.travelers.gotravelserver.global.entity.BaseTimeEntity;
 
 import jakarta.persistence.Column;
@@ -9,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -19,6 +22,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLDelete(sql = "update users set deleted = true where id = ?")
 public class User extends BaseTimeEntity {
 
 	@Id
@@ -36,4 +40,8 @@ public class User extends BaseTimeEntity {
 
 	@Column(name = "phone")
 	private String phone;
+
+	@Builder.Default
+	@Column(name = "deleted")
+	private Boolean deleted = Boolean.FALSE;
 }
