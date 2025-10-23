@@ -1,7 +1,6 @@
 package com.travelers.gotravelserver.domain.user;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,17 +28,13 @@ public class UserService {
 	public UserResponse register(UserRegisterRequest req) {
 		if (userRepository.existsByEmail(req.getEmail()))
 			throw new CustomException(ErrorCode.DUPLICATED_EMAIL);
-
 		User user = User.builder()
 			.email(req.getEmail())
 			.password(passwordEncoder.encode(req.getPassword()))
 			.name(req.getName())
 			.phone(req.getPhone())
 			.build();
-
-		User saved = userRepository.save(user);
-		return UserResponse.from(saved);
-
+		return UserResponse.from(userRepository.save(user));
 	}
 
 	// 로그인
@@ -56,37 +51,28 @@ public class UserService {
 	public UserResponse update(Long id, UserUpdateRequest req) {
 		User user = userRepository.findById(id)
 			.orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
-
-		User updated = user.toBuilder()
-			.phone(Optional.ofNullable(req.getPhone()).orElse(user.getPhone()))
-			.password(Optional.ofNullable(req.getPassword())
-				.map(passwordEncoder::encode)
-				.orElse(user.getPassword()))
-			.build();
-
-		User saved = userRepository.save(updated);
-		return UserResponse.from(saved);
+		user.changeInfo(req, passwordEncoder);
+		return UserResponse.from(userRepository.save(user));
 	}
 
 	// ID로 사용자 조회
 	public UserResponse getUserById(Long id) {
-		User user = userRepository.findById(id)
-			.orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
-		return UserResponse.from(user);
+		return UserResponse.from(findUser(id));
 	}
 
 	// 이메일로 사용자 조회
 	public UserResponse getUserByEmail(String email) {
-		User user = userRepository.findByEmail(email)
-			.orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
-		return UserResponse.from(user);
+		return UserResponse.from(
+			userRepository.findByEmail(email)
+				.orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND))
+		);
 	}
 
 	// 전화번호로 사용자 조회
 	public UserResponse getUserByPhone(String phone) {
-		User user = userRepository.findByPhone(phone)
-			.orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
-		return UserResponse.from(user);
+		return UserResponse.from(
+			userRepository.findByPhone(phone)
+				.orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND)));
 	}
 
 	// 사용자 전체 조회
@@ -95,5 +81,10 @@ public class UserService {
 			.stream()
 			.map(UserResponse::from)
 			.toList();
+	}
+
+	private User findUser(Long id) {
+		return userRepository.findById(id)
+			.orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 	}
 }

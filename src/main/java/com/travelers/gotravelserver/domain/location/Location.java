@@ -8,14 +8,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "locations", uniqueConstraints = @UniqueConstraint(columnNames = {"region", "city"}))
 @Getter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Location {
