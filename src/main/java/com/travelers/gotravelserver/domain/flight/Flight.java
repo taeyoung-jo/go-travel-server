@@ -33,18 +33,18 @@ public class Flight {
 	@JoinColumn(name = "location_id", nullable = false)
 	private Location location;
 
-	@Column(name = "flight_number", nullable = false)
+	@Column(nullable = false)
 	private String flightNumber; // 항공편명
 
-	@Column(name = "airline", nullable = false)
+	@Column(nullable = false)
 	private String airline; // 항공사
 
-	@Column(name = "dept_time", nullable = false)
+	@Column(nullable = false)
 	private LocalDateTime deptTime; // 출발시간
 
-	@Column(name = "arrival_time", nullable = false)
+	@Column(nullable = false)
 	private LocalDateTime arrivalTime; // 도착시간
 
-	@Column(name = "price", nullable = false, precision = 10, scale = 2)
+	@Column(nullable = false, precision = 10, scale = 2)
 	private BigDecimal price;
 }
