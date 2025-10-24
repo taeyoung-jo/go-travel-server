@@ -22,9 +22,9 @@ public class Location {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "region", nullable = false)
+	@Column(nullable = false)
 	private String region;
 
-	@Column(name = "city", nullable = false)
+	@Column(nullable = false)
 	private String city;
 }
