@@ -17,7 +17,15 @@ public enum ErrorCode {
 	FLIGHT_NOT_FOUND(404, "존재하지 않는 항공편입니다."),
 
 	// 지역 관련
-	LOCATION_NOT_FOUND(404, "존재하지 않는 여행지입니다.");
+	LOCATION_NOT_FOUND(404, "존재하지 않는 여행지입니다."),
+
+	// 패키지 관련
+	PRODUCT_NOT_FOUND(404, "존재하지 않는 패키지입니다."),
+	PRODUCT_NOT_AVAILABLE(400, "예약이 불가한 패키지입니다."),
+
+	// 예약 관련
+	INSUFFICIENT_REMAINING_SEATS(400, "잔여 인원이 부족합니다."),
+	RESERVATION_NOT_FOUND(404, "존재하지 않는 예약 정보입니다.");
 
 	public final int status;
 	@Getter
