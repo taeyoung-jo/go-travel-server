@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.travelers.gotravelserver.domain.product.domain.Product;
 import com.travelers.gotravelserver.domain.product.domain.ProductStatus;
-import com.travelers.gotravelserver.domain.reservation.ReservationService;
 import com.travelers.gotravelserver.global.exception.CustomException;
 import com.travelers.gotravelserver.global.exception.ErrorCode;
 
@@ -19,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 public class ProductService {
 
 	private final ProductRepository productRepository;
-	private final ReservationService reservationService;
 
 	// ID로 패키지 조회
 	public Product getProductById(Long id) {

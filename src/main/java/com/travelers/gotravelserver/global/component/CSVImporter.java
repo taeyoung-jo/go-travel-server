@@ -29,6 +29,12 @@ public class CSVImporter implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		// 이미 데이터 있으면 삽입 건너뜀
+		if (flightMapper.countFlights() > 0) {
+			log.info("⚠️ flights 테이블에 이미 데이터 존재. CSV import 건너뜀.");
+			return;
+		}
+
 		List<FlightCsvDto> flights = new ArrayList<>();
 		try (var reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(
 			getClass().getClassLoader().getResourceAsStream("db/import/flights_data_updated.csv")),
