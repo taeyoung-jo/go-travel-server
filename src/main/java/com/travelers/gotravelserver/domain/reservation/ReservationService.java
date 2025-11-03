@@ -71,6 +71,6 @@ public class ReservationService {
 		Reservation reservation = getReservationById(id);
 		reservation.changeStatus(ReservationStatus.CANCELLED);
 		productService.updateProductStatus(reservation.getProduct().getId(), ProductStatus.AVAILABLE);
-		reservationRepository.deleteById(id);
+		reservationRepository.delete(reservation);
 	}
 }
