@@ -45,7 +45,7 @@ public class Product extends BaseTimeEntity {
 	private BigDecimal price;
 
 	@Column(precision = 2, scale = 1)
-	private double rating;
+	private BigDecimal rating;
 
 	@Column(nullable = false)
 	private int maxParticipants; // 예약 가능한 최대 인원
