@@ -1,4 +1,4 @@
-package com.travelers.gotravelserver.domain.flight;
+package com.travelers.gotravelserver.domain.flight.domain;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

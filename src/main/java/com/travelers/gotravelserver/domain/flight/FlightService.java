@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.travelers.gotravelserver.domain.flight.domain.Flight;
 import com.travelers.gotravelserver.domain.location.Location;
 import com.travelers.gotravelserver.global.exception.CustomException;
 import com.travelers.gotravelserver.global.exception.ErrorCode;

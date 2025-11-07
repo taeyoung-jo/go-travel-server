@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.travelers.gotravelserver.domain.flight.domain.Flight;
 import com.travelers.gotravelserver.domain.location.Location;
 
 @Repository

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.travelers.gotravelserver.domain.flight.domain.Flight;
 import com.travelers.gotravelserver.domain.location.Location;
 import com.travelers.gotravelserver.domain.location.LocationRepository;
 
