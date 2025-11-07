@@ -32,7 +32,8 @@ public enum ErrorCode {
 	// 예약 관련
 	INSUFFICIENT_REMAINING_SEATS(400, "잔여 인원이 부족합니다."),
 	RESERVATION_NOT_FOUND(404, "존재하지 않는 예약 정보입니다."),
-	RESERVATION_FAILED(400, "예약에 실패했습니다.");
+	RESERVATION_FAILED(400, "예약에 실패했습니다."),
+	RESERVATION_ALREADY_CANCELLED(400, "이미 취소된 예약입니다.");
 
 	public final int status;
 	public final String message;

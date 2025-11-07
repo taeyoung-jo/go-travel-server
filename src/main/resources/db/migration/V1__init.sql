@@ -65,6 +65,7 @@ CREATE TABLE reservations
     id           BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_id      BIGINT      NOT NULL,
     product_id   BIGINT      NOT NULL,
+    flight_id    BIGINT      NOT NULL,
     participants INT         NOT NULL,
     price        DECIMAL     NOT NULL,
     status       VARCHAR(50) NOT NULL DEFAULT 'PENDING',
@@ -72,6 +73,7 @@ CREATE TABLE reservations
     created_at   DATETIME    NOT NULL,
     updated_at   DATETIME    NOT NULL,
     CONSTRAINT fk_reservation_user FOREIGN KEY (user_id) REFERENCES users (id),
-    CONSTRAINT fk_reservation_product FOREIGN KEY (product_id) REFERENCES products (id)
+    CONSTRAINT fk_reservation_product FOREIGN KEY (product_id) REFERENCES products (id),
+    CONSTRAINT fk_reservation_flight FOREIGN KEY (flight_id) REFERENCES flights (id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;

@@ -7,8 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.travelers.gotravelserver.domain.flight.domain.DeptTimeType;
+import com.travelers.gotravelserver.domain.product.domain.Product;
 import com.travelers.gotravelserver.domain.product.dto.ProductResponse;
 import com.travelers.gotravelserver.domain.product.mapper.ProductMapper;
+import com.travelers.gotravelserver.global.exception.CustomException;
+import com.travelers.gotravelserver.global.exception.ErrorCode;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,6 +21,13 @@ import lombok.RequiredArgsConstructor;
 public class ProductService {
 
 	private final ProductMapper productMapper;
+	private final ProductRepository productRepository;
+
+	public ProductResponse getProductById(Long id) {
+		Product product = productRepository.findById(id)
+			.orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
+		return ProductResponse.from(product);
+	}
 
 	public List<ProductResponse> getProducts(
 		String region,
