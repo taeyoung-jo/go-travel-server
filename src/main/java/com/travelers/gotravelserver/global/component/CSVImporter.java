@@ -4,7 +4,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -37,6 +38,7 @@ public class CSVImporter implements CommandLineRunner {
 
 		final int BATCH_SIZE = 1000;
 		List<FlightCsvDto> batch = new ArrayList<>(BATCH_SIZE);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 		try (var reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(
 			getClass().getClassLoader().getResourceAsStream("db/import/flights_data_updated.csv")),
@@ -46,11 +48,14 @@ public class CSVImporter implements CommandLineRunner {
 			reader.lines().skip(1).forEach(line -> {
 				try {
 					String[] p = line.split(",", -1);
+					LocalDateTime deptTime = LocalDateTime.parse(p[2].trim(), formatter);
+					LocalDateTime arrivalTime = LocalDateTime.parse(p[3].trim(), formatter);
 					batch.add(FlightCsvDto.builder()
 						.flightNumber(p[0].trim())
 						.airline(p[1].trim())
-						.deptTime(Timestamp.valueOf(p[2].trim()))
-						.arrivalTime(Timestamp.valueOf(p[3].trim()))
+						.deptDate(deptTime.toLocalDate())
+						.deptTime(deptTime)
+						.arrivalTime(arrivalTime)
 						.price(new BigDecimal(p[4].trim()))
 						.destination(p[5].trim())
 						.build());

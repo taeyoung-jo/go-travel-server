@@ -1,7 +1,8 @@
 package com.travelers.gotravelserver.domain.flight.dto;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,11 +14,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FlightCsvDto {
-	
+
 	private String flightNumber;
 	private String airline;
-	private Timestamp deptTime;
-	private Timestamp arrivalTime;
+	private LocalDate deptDate;
+	private LocalDateTime deptTime;
+	private LocalDateTime arrivalTime;
 	private BigDecimal price;
 	private String destination;
 }

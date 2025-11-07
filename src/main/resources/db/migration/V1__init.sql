@@ -50,6 +50,7 @@ CREATE TABLE products
     name        VARCHAR(255)   NOT NULL,
     price       DECIMAL(10, 2) NOT NULL,
     days        TINYINT        NOT NULL,
+    seats       INT            NOT NULL DEFAULT 20,
     image_url   VARCHAR(500),
     status      VARCHAR(50)    NOT NULL DEFAULT 'AVAILABLE',
     created_at  DATETIME       NOT NULL,
