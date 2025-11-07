@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import org.hibernate.annotations.SQLDelete;
 
+import com.travelers.gotravelserver.domain.flight.domain.Flight;
 import com.travelers.gotravelserver.domain.product.domain.Product;
 import com.travelers.gotravelserver.domain.user.User;
 import com.travelers.gotravelserver.global.entity.BaseTimeEntity;
@@ -45,6 +46,10 @@ public class Reservation extends BaseTimeEntity {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "product_id", nullable = false)
 	private Product product;
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "flight_id", nullable = false)
+	private Flight flight;
 
 	@Column(nullable = false)
 	private int participants; // 예약 인원 수
