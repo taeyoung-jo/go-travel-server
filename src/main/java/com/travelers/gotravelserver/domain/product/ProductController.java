@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.travelers.gotravelserver.domain.flight.domain.DeptTimeType;
+import com.travelers.gotravelserver.domain.product.domain.Product;
 import com.travelers.gotravelserver.domain.product.dto.ProductResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -38,7 +39,7 @@ public class ProductController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<ProductResponse> getProductDetail(@PathVariable Long id) {
-		ProductResponse response = productService.getProductById(id);
-		return ResponseEntity.ok(response);
+		Product product = productService.getProductById(id);
+		return ResponseEntity.ok(ProductResponse.from(product));
 	}
 }
