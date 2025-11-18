@@ -69,6 +69,11 @@ public class UserService {
 			.orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 	}
 
+	// 이메일 중복 조회
+	public boolean existsEmail(String email) {
+		return userRepository.existsByEmail(email);
+	}
+
 	// 전화번호로 사용자 조회
 	public User getUserByPhone(String phone) {
 		return userRepository.findByPhone(phone)
