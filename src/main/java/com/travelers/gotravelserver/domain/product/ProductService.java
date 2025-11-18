@@ -34,8 +34,9 @@ public class ProductService {
 		String airline,
 		DeptTimeType deptTimeType,
 		BigDecimal minPrice,
-		BigDecimal maxPrice
+		BigDecimal maxPrice,
+		String keyword
 	) {
-		return productMapper.findProducts(region, locationId, airline, deptTimeType, minPrice, maxPrice);
+		return productMapper.findProducts(region, locationId, airline, deptTimeType, minPrice, maxPrice, keyword);
 	}
 }
