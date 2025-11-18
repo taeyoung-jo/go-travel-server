@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:63342") // HTML이 열리는 주소
+@CrossOrigin(origins = "http://localhost:63342") // HTML이 열리는 주소(인텔리제이에서 여는 테스트용 브라우저)
 public class AuthController {
 
     private final UserService userService;
@@ -29,3 +29,5 @@ public class AuthController {
     }
 
 }
+
+
