@@ -50,5 +50,10 @@
                 AND p.price &lt;= #{maxPrice}
             </when>
         </choose>
+
+        <!-- 검색 키워드 -->
+        <if test="keyword != null and keyword != ''">
+            AND p.name LIKE CONCAT('%', #{keyword}, '%')
+        </if>
     </select>
 </mapper>

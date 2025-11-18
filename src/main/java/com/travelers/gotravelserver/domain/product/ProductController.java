@@ -30,10 +30,11 @@ public class ProductController {
 		@RequestParam(required = false) String airline,
 		@RequestParam(required = false) DeptTimeType deptTimeType,
 		@RequestParam(required = false) BigDecimal minPrice,
-		@RequestParam(required = false) BigDecimal maxPrice
+		@RequestParam(required = false) BigDecimal maxPrice,
+		@RequestParam(required = false) String keyword
 	) {
 		List<ProductResponse> response = productService.getProducts(
-			region, locationId, airline, deptTimeType, minPrice, maxPrice);
+			region, locationId, airline, deptTimeType, minPrice, maxPrice, keyword);
 		return ResponseEntity.ok(response);
 	}
 

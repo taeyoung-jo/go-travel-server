@@ -18,6 +18,7 @@ public interface ProductMapper {
 		@Param("airline") String airline,
 		@Param("deptTimeType") DeptTimeType deptTimeType,
 		@Param("minPrice") BigDecimal minPrice,
-		@Param("maxPrice") BigDecimal maxPrice
+		@Param("maxPrice") BigDecimal maxPrice,
+		@Param("keyword") String keyword
 	);
 }
