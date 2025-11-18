@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.travelers.gotravelserver.domain.user.dto.EmailExistsRequest;
 import com.travelers.gotravelserver.domain.user.dto.UserLoginRequest;
 import com.travelers.gotravelserver.domain.user.dto.UserRegisterRequest;
 import com.travelers.gotravelserver.domain.user.dto.UserResponse;
@@ -49,5 +50,12 @@ public class UserController {
 	) {
 		User updated = userService.update(user.getId(), req);
 		return ResponseEntity.ok(UserResponse.from(updated));
+	}
+
+	// 이메일 중복 확인
+	@PostMapping("/email-exists")
+	public ResponseEntity<Boolean> checkEmailExists(@RequestBody @Valid EmailExistsRequest req) {
+		boolean exists = userService.existsEmail(req.email());
+		return ResponseEntity.ok(exists);
 	}
 }
