@@ -1,10 +1,12 @@
 package com.travelers.gotravelserver.domain.flight;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.travelers.gotravelserver.domain.flight.domain.Flight;
 import com.travelers.gotravelserver.domain.location.Location;
 import com.travelers.gotravelserver.global.exception.CustomException;
 import com.travelers.gotravelserver.global.exception.ErrorCode;
@@ -24,19 +26,12 @@ public class FlightService {
 			.orElseThrow(() -> new CustomException(ErrorCode.FLIGHT_NOT_FOUND));
 	}
 
-	// 항공편명으로 조회
-	public List<Flight> getFlightsByFlightNumber(String flightNumber) {
-		return flightRepository.findByFlightNumber(flightNumber);
-	}
-
-	// 항공사로 조회
-	public List<Flight> getFlightsByAirline(String airline) {
-		return flightRepository.findByAirline(airline);
-	}
-
-	// 도착지(location)로 조회
-	public List<Flight> getFlightsByLocation(Location location) {
-		return flightRepository.findByLocation(location);
+	// 도착지(location) + 출발일 기준 최저가 항공편 1개 조회
+	public Flight getCheapestFlight(Location location, LocalDate departureDate) {
+		if (departureDate == null)
+			throw new CustomException(ErrorCode.INVALID_DEPARTURE_DATE);
+		return flightRepository.findTopByLocationAndDeptDateOrderByPriceAsc(location, departureDate)
+			.orElseThrow(() -> new CustomException(ErrorCode.FLIGHT_NOT_FOUND));
 	}
 
 	// 전체 조회

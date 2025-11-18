@@ -25,16 +25,17 @@ public class AuthController {
     // 회원가입
     @PostMapping("/register")
     public ResponseEntity<UserResponse> register(@RequestBody UserRegisterRequest req) {
-        return ResponseEntity.ok(userService.register(req));
+        User user = userService.register(req); // User 객체
+        UserResponse response = UserResponse.from(user); // 변환
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody UserLoginRequest req) {
-        UserResponse userResponse = userService.login(req); // UserResponse 반환
+        User user = userService.login(req); // User 반환
+        UserResponse userResponse = UserResponse.from(user); // 여기서 변환
 
-        // JWT 생성
         String token = jwtTokenProvider.createToken(userResponse.getEmail());
-
         Map<String, String> result = new HashMap<>();
         result.put("token", token);
         return ResponseEntity.ok(result);
