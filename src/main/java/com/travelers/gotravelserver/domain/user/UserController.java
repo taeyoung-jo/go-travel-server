@@ -1,5 +1,7 @@
 package com.travelers.gotravelserver.domain.user;
 
+import com.travelers.gotravelserver.global.security.JwtTokenProvider;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
 	private final UserService userService;
+    private final JwtTokenProvider jwtTokenProvider;
 
 	@PostMapping("/register")
 	public ResponseEntity<UserResponse> register(@RequestBody @Valid UserRegisterRequest req) {
@@ -33,9 +36,18 @@ public class UserController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<UserResponse> login(@RequestBody @Valid UserLoginRequest req) {
+	public ResponseEntity<UserResponse> login(@RequestBody @Valid UserLoginRequest req,  HttpServletResponse response) {
 		User user = userService.login(req);
-		return ResponseEntity.ok(UserResponse.from(user));
+        UserResponse userResponse = UserResponse.from(user);
+
+        String token = jwtTokenProvider.createToken(userResponse.getEmail());
+        response.setHeader("Set-Cookie",
+                "token=" + token +
+                        "; Path=/; Max-Age=" + (60*30) + // 30분
+                        "; HttpOnly=false; SameSite=None; Secure=false"
+        );
+
+        return ResponseEntity.ok(userResponse);
 	}
 
 	@GetMapping("/me")
