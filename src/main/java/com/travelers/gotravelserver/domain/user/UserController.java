@@ -1,5 +1,8 @@
 package com.travelers.gotravelserver.domain.user;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.travelers.gotravelserver.global.security.JwtTokenProvider;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
@@ -36,18 +39,22 @@ public class UserController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<UserResponse> login(@RequestBody @Valid UserLoginRequest req,  HttpServletResponse response) {
+	public ResponseEntity<Map<String, Object>> login(@RequestBody @Valid UserLoginRequest req,  HttpServletResponse response) {
 		User user = userService.login(req);
         UserResponse userResponse = UserResponse.from(user);
 
-        String token = jwtTokenProvider.createToken(userResponse.getEmail());
+        String token = jwtTokenProvider.createToken(userResponse.getEmail(),userResponse.getName());
         response.setHeader("Set-Cookie",
                 "token=" + token +
                         "; Path=/; Max-Age=" + (60*30) + // 30분
                         "; HttpOnly=false; SameSite=None; Secure=false"
         );
 
-        return ResponseEntity.ok(userResponse);
+		Map<String, Object> result = new HashMap<>();
+		result.put("token", token);
+		result.put("user", userResponse);
+
+        return ResponseEntity.ok(result);
 	}
 
 	@GetMapping("/me")
@@ -70,4 +77,5 @@ public class UserController {
 		boolean exists = userService.existsEmail(req.email());
 		return ResponseEntity.ok(exists);
 	}
+
 }

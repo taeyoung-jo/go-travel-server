@@ -20,4 +20,5 @@ public class GoTravelServerApplication {
 	public void setTime() {
 		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
 	}
+
 }

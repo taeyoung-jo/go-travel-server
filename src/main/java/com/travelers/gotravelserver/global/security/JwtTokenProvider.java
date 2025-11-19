@@ -16,9 +16,11 @@ public class JwtTokenProvider {
     private final long validityInMilliseconds = 3600000; // 1시간
 
     // JWT 생성
-    public String createToken(String email) {
+    public String createToken(String email, String username) {
         Claims claims = Jwts.claims().setSubject(email);
-        Date now = new Date();
+		claims.put("username", username);
+
+		Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 
         return Jwts.builder()
