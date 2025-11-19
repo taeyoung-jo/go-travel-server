@@ -52,7 +52,7 @@ public class SecurityConfig {
 			.formLogin(AbstractHttpConfigurer::disable) // 기본 로그인 페이지 비활성화
 			.httpBasic(AbstractHttpConfigurer::disable) // 기본 인증 비활성화
 		    .authorizeHttpRequests(auth -> auth
-			    .requestMatchers("/auth/**").permitAll() // 회원가입/로그인은 허용
+			    .requestMatchers("/**").permitAll() // 회원가입/로그인은 허용
                 .anyRequest().authenticated() // 그 외는 인증 필요
 		)
           .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -66,8 +66,8 @@ public class SecurityConfig {
 		configuration.addAllowedHeader("*");
 		configuration.addAllowedMethod("*");
 		configuration.setAllowCredentials(true);
-
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        configuration.addExposedHeader("Set-Cookie");
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);
 		return source;
 	}

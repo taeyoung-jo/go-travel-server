@@ -6,6 +6,8 @@ import com.travelers.gotravelserver.domain.user.dto.UserLoginRequest;
 import com.travelers.gotravelserver.domain.user.dto.UserRegisterRequest;
 import com.travelers.gotravelserver.domain.user.dto.UserResponse;
 import com.travelers.gotravelserver.global.security.JwtTokenProvider;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +18,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:63342") // HTML이 열리는 주소(인텔리제이에서 여는 테스트용 브라우저)
+@CrossOrigin(origins = "http://localhost:5173") // HTML이 열리는 주소(인텔리제이에서 여는 테스트용 브라우저)
 public class AuthController {
 
     private final UserService userService;
@@ -31,14 +33,19 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody UserLoginRequest req) {
-        User user = userService.login(req); // User 반환
-        UserResponse userResponse = UserResponse.from(user); // 여기서 변환
-
+    public ResponseEntity<Void> login(@RequestBody UserLoginRequest req, HttpServletResponse response) {
+        User user = userService.login(req);
+        UserResponse userResponse = UserResponse.from(user);
         String token = jwtTokenProvider.createToken(userResponse.getEmail());
-        Map<String, String> result = new HashMap<>();
-        result.put("token", token);
-        return ResponseEntity.ok(result);
+
+        // 직접 Set-Cookie 헤더
+        response.setHeader("Set-Cookie",
+                "token=" + token +
+                        "; Path=/; Max-Age=" + (60*30) +
+                        "; HttpOnly=false; SameSite=None; Secure=false"
+        );
+
+        return ResponseEntity.ok().build();
     }
 }
 
