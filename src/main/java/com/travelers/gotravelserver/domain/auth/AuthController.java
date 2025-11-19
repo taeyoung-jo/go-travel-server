@@ -32,30 +32,11 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-//    @PostMapping("/login")
-//    public ResponseEntity<Map<String, String>> login(@RequestBody UserLoginRequest req) {
-//        User user = userService.login(req); // User 반환
-//        UserResponse userResponse = UserResponse.from(user); // 여기서 변환
-//
-//        String token = jwtTokenProvider.createToken(userResponse.getEmail());
-//        Map<String, String> result = new HashMap<>();
-//        result.put("token", token);
-//        return ResponseEntity.ok(result);
-//    }
-
     @PostMapping("/login")
     public ResponseEntity<Void> login(@RequestBody UserLoginRequest req, HttpServletResponse response) {
         User user = userService.login(req);
         UserResponse userResponse = UserResponse.from(user);
         String token = jwtTokenProvider.createToken(userResponse.getEmail());
-
-//        Cookie cookie = new Cookie("token", token);
-//        cookie.setHttpOnly(false); // 개발용, 앱탭에서 확인 가능
-//        cookie.setSecure(false);   // 로컬 개발용, 배포시 true
-//        cookie.setPath("/");
-//        cookie.setMaxAge(60 * 30); // 30분
-//        cookie.setDomain("localhost");
-//        response.addCookie(cookie);
 
         // 직접 Set-Cookie 헤더
         response.setHeader("Set-Cookie",
@@ -66,8 +47,6 @@ public class AuthController {
 
         return ResponseEntity.ok().build();
     }
-
-
 }
 
 
