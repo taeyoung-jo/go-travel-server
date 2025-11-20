@@ -33,12 +33,7 @@ public class ReservationController {
 		@RequestAttribute("user") User user,
 		@RequestBody @Valid ReservationCreateRequest request
 	) {
-		ReservationResponse response = reservationService.createReservation(
-			request.getProductId(),
-			user,
-			request.getParticipants(),
-			request.getDeptDate()
-		);
+		ReservationResponse response = reservationService.createReservation(user, request);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
@@ -50,7 +45,7 @@ public class ReservationController {
 		return ResponseEntity.ok(responses);
 	}
 
-	@GetMapping("me/reservations/{id}")
+	@GetMapping("/me/reservations/{id}")
 	public ResponseEntity<ReservationDetailResponse> getReservationDetail(
 		@RequestAttribute("user") User user,
 		@PathVariable Long id
@@ -59,7 +54,7 @@ public class ReservationController {
 		return ResponseEntity.ok(response);
 	}
 
-	@DeleteMapping("me/reservations/{id}")
+	@DeleteMapping("/me/reservations/{id}")
 	public ResponseEntity<Void> cancelReservation(
 		@RequestAttribute("user") User user,
 		@PathVariable Long id
