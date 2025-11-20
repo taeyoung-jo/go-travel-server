@@ -35,24 +35,22 @@ public class ReservationService {
 
 	// 예약 생성
 	@Transactional
-	public ReservationResponse createReservation(Long userId, ReservationCreateRequest request) {
-		User user = userService.getUserById(userId);
+	public ReservationResponse createReservation(User user, ReservationCreateRequest request) {
 		Flight flight = flightService.getFlightById(request.getFlightId());
 		Product product = productService.getProductById(request.getProductId());
 		if (product.getStatus() != ProductStatus.AVAILABLE)
 			throw new CustomException(ErrorCode.PRODUCT_NOT_AVAILABLE);
-		int participants = request.getParticipants();
 
 		// 좌석 차감, 0석 되면 상태 변경
+		int participants = request.getParticipants();
 		product.decreaseSeats(request.getParticipants());
 		if (product.getSeats() == 0)
 			product.changeStatus(ProductStatus.SOLD_OUT);
 
-		// 가격 계산
+		// 가격 계산 (상품 * 인원 + 항공)
 		BigDecimal totalPrice = product.getPrice()
-			.add(flight.getPrice())
-			.add(product.getPrice())
-			.multiply(BigDecimal.valueOf(participants));
+			.multiply(BigDecimal.valueOf(participants))
+			.add(flight.getPrice());
 
 		// 예약 생성
 		Reservation reservation = Reservation.builder()
