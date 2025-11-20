@@ -33,7 +33,7 @@ public class FlightService {
 		LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
 		return flightRepository.findByDeptDateBetween(start, end)
 			.stream()
-			.map(this::toResponse)
+			.map(FlightResponse::from)
 			.toList();
 	}
 
@@ -48,19 +48,5 @@ public class FlightService {
 	// 전체 조회
 	public List<Flight> getAllFlights() {
 		return flightRepository.findAll();
-	}
-
-	public FlightResponse toResponse(Flight f) {
-		return new FlightResponse(
-			f.getId(),
-			f.getLocation().getId(),
-			f.getLocation().getCity(),
-			f.getFlightNumber(),
-			f.getAirline(),
-			f.getDeptDate(),
-			f.getDeptTime(),
-			f.getArrivalTime(),
-			f.getPrice()
-		);
 	}
 }

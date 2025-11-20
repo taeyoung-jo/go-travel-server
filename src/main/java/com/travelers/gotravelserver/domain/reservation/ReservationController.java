@@ -33,12 +33,7 @@ public class ReservationController {
 		@RequestAttribute("user") User user,
 		@RequestBody @Valid ReservationCreateRequest request
 	) {
-		ReservationResponse response = reservationService.createReservation(
-			request.getProductId(),
-			user,
-			request.getParticipants(),
-			request.getDeptDate()
-		);
+		ReservationResponse response = reservationService.createReservation(user.getId(), request);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 

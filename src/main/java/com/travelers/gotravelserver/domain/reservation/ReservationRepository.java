@@ -15,12 +15,14 @@ import com.travelers.gotravelserver.domain.user.User;
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
 	// 유저별 예약 목록 조회
+	Optional<Reservation> findByIdAndUser(Long id, User user);
+
 	@Query("select r from Reservation r "
 		+ "join fetch r.product p "
 		+ "join fetch r.flight f "
 		+ "where r.user = :user and r.deleted = false")
 	List<Reservation> findAllByUserAndDeletedFalse(@Param("user") User user);
-	
+
 	@Query("select r from Reservation r "
 		+ "join fetch r.product p "
 		+ "join fetch p.location l "
