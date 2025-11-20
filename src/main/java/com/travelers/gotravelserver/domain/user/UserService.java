@@ -48,6 +48,16 @@ public class UserService {
         return user; // DB 변경 없이 반환
     }
 
+	// 이메일로 사용자 확인
+	public boolean verifyPasswordByEmail(String email, String rawPassword) {
+
+		User user = userRepository.findByEmail(email)
+			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+
+		boolean matches = passwordEncoder.matches(rawPassword, user.getPassword());
+
+		return matches;
+	}
 
 	// 회원정보 수정 - phone 또는 password
 	@Transactional

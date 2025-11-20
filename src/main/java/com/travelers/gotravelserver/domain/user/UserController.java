@@ -3,10 +3,14 @@ package com.travelers.gotravelserver.domain.user;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.travelers.gotravelserver.domain.user.dto.PasswordVerifyRequest;
+import com.travelers.gotravelserver.domain.user.dto.PasswordVerifyResponse;
 import com.travelers.gotravelserver.global.security.JwtTokenProvider;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -69,6 +73,28 @@ public class UserController {
 	) {
 		User updated = userService.update(user.getId(), req);
 		return ResponseEntity.ok(UserResponse.from(updated));
+	}
+
+	@PostMapping("/me/password/verify")
+	public ResponseEntity<PasswordVerifyResponse> verifyPassword(
+		@AuthenticationPrincipal UserDetails userDetails,
+		@RequestBody @Valid PasswordVerifyRequest req
+	) {
+
+		if (userDetails == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+				.body(new PasswordVerifyResponse(false, "로그인이 필요합니다."));
+		}
+		String email = userDetails.getUsername();
+
+		boolean isValid = userService.verifyPasswordByEmail(email, req.getPassword());
+
+		PasswordVerifyResponse response = new PasswordVerifyResponse(
+			isValid,
+			isValid ? "비밀번호가 일치합니다." : "비밀번호가 일치하지 않습니다."
+		);
+
+		return ResponseEntity.ok(response);
 	}
 
 	// 이메일 중복 확인
