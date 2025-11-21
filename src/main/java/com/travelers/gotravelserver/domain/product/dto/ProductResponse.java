@@ -20,6 +20,7 @@ public class ProductResponse {
 	private Byte days;
 	private int seats;
 	private String imageUrl;
+    private String detailUrl;
 	private ProductStatus status;
 
 	public static ProductResponse from(Product product) {
@@ -32,6 +33,7 @@ public class ProductResponse {
 			.days(product.getDays())
 			.seats(product.getSeats())
 			.imageUrl(product.getImageUrl())
+            .detailUrl(product.getDetailUrl())
 			.status(product.getStatus())
 			.build();
 	}

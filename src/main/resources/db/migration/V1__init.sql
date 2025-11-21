@@ -52,6 +52,7 @@ CREATE TABLE products
     days        TINYINT        NOT NULL,
     seats       INT            NOT NULL DEFAULT 20,
     image_url   VARCHAR(500),
+    detail_url   VARCHAR(500),
     status      VARCHAR(50)    NOT NULL DEFAULT 'AVAILABLE',
     created_at  DATETIME       NOT NULL,
     updated_at  DATETIME       NOT NULL,

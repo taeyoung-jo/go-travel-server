@@ -56,6 +56,9 @@ public class Product extends BaseTimeEntity {
 	@Column(name = "image_url", length = 500)
 	private String imageUrl;
 
+    @Column(name = "detail_url", length = 500)
+    private String detailUrl;
+
 	@Builder.Default
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
