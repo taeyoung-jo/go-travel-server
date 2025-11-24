@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.travelers.gotravelserver.domain.flight.mapper.FlightMapper">
+    <insert id="insertFlights">
+        INSERT INTO flights (location_id, flight_number, airline, dept_date, dept_time, arrival_time, price)
+        SELECT l.id, f.flight_number, f.airline, f.dept_date, f.dept_time, f.arrival_time, f.price
+        FROM (
+        <foreach collection="flights" item="f" separator=" UNION ALL ">
+            SELECT
+            #{f.destination} AS destination,
+            #{f.flightNumber} AS flight_number,
+            #{f.airline} AS airline,
+            #{f.deptDate} AS dept_date,
+            #{f.deptTime} AS dept_time,
+            #{f.arrivalTime} AS arrival_time,
+            #{f.price} AS price
+        </foreach>
+        ) f
+        JOIN locations l ON l.city = f.destination
+    </insert>
+</mapper>

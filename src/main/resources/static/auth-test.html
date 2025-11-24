@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>JWT 회원가입 & 로그인 테스트</title>
+</head>
+<body>
+<h2>회원가입</h2>
+<input type="email" id="signupEmail" placeholder="이메일">
+<input type="password" id="signupPassword" placeholder="비밀번호">
+<input type="text" id="signupUsername" placeholder="사용자 이름">
+<button id="signupBtn">회원가입</button>
+
+<h2>로그인</h2>
+<input type="email" id="loginEmail" placeholder="이메일">
+<input type="password" id="loginPassword" placeholder="비밀번호">
+<button id="loginBtn">로그인</button>
+
+<h2>인증 테스트</h2>
+<button id="authBtn">인증 API 호출</button>
+
+<script>
+    const BASE_URL = "http://localhost:8080/api/auth"; // 서버 API 기본 URL
+
+    // 회원가입
+    document.getElementById("signupBtn").addEventListener("click", async () => {
+        const res = await fetch(`${BASE_URL}/signup`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                email: document.getElementById("signupEmail").value,
+                password: document.getElementById("signupPassword").value,
+                username: document.getElementById("signupUsername").value
+            })
+        });
+        const data = await res.json();
+        console.log("회원가입 응답:", data);
+        alert(res.ok ? "회원가입 성공!" : "회원가입 실패");
+    });
+
+    // 로그인
+    document.getElementById("loginBtn").addEventListener("click", async () => {
+        const res = await fetch(`${BASE_URL}/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                email: document.getElementById("loginEmail").value,
+                password: document.getElementById("loginPassword").value
+            })
+        });
+        const data = await res.json();
+        console.log("로그인 응답:", data);
+
+        if(data.token){ // JWT 키 이름 확인 필요 (예: data.accessToken)
+            localStorage.setItem("token", data.token);
+            alert("로그인 성공! JWT 저장됨");
+        } else {
+            alert("로그인 실패");
+        }
+    });
+
+    // 인증 테스트
+    document.getElementById("authBtn").addEventListener("click", async () => {
+        const token = localStorage.getItem("token");
+        if(!token) return alert("로그인 후 시도하세요.");
+
+        const res = await fetch("http://localhost:8080/api/protected", { // 보호된 API
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+        const data = await res.json();
+        console.log("인증 API 응답:", data);
+        alert(res.ok ? "인증 성공!" : "인증 실패");
+    });
+</script>
+</body>
+</html>

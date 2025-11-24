@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.travelers.gotravelserver.domain.product.mapper.ProductMapper">
+
+    <!-- 패키지 조회 -->
+    <select id="findProducts" parameterType="map"
+            resultType="com.travelers.gotravelserver.domain.product.dto.ProductResponse">
+        SELECT p.id, l.region, l.city, p.name, p.price, p.days, p.seats, p.image_url,p.detail_url, p.status
+        FROM products p
+        JOIN locations l ON p.location_id = l.id
+        WHERE 1=1
+
+        <!-- 지역 필터링 -->
+        <if test="locationId != null">
+            AND l.id = #{locationId}
+        </if>
+        <if test="region != null and locationId == null">
+            AND l.region = #{region}
+        </if>
+
+        <!-- 항공사 필터링 -->
+        <if test="airline != null">
+            AND EXISTS (
+            SELECT 1 FROM flights f
+            WHERE f.location_id = p.location_id
+            AND f.airline = #{airline}
+            )
+        </if>
+
+        <!-- 출발 시간 (오전/오후) 필터링 -->
+        <if test="deptTimeType != null">
+            AND EXISTS (
+            SELECT 1 FROM flights f
+            WHERE f.location_id = p.location_id
+            AND f.dept_time BETWEEN #{deptTimeType.startTime} AND #{deptTimeType.endTime}
+            )
+        </if>
+
+        <!-- 가격 필터링 -->
+        <choose>
+            <when test="minPrice != null and maxPrice != null">
+                AND p.price BETWEEN #{minPrice} AND #{maxPrice}
+            </when>
+            <when test="minPrice != null">
+                AND p.price &gt;= #{minPrice}
+            </when>
+            <when test="maxPrice != null">
+                AND p.price &lt;= #{maxPrice}
+            </when>
+        </choose>
+
+        <!-- 검색 키워드 -->
+        <if test="keyword != null and keyword != ''">
+            AND (p.name LIKE CONCAT('%', #{keyword}, '%') OR l.region LIKE CONCAT('%', #{keyword}, '%'))
+        </if>
+    </select>
+</mapper>
