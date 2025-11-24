@@ -51,8 +51,13 @@ public class SecurityConfig {
 			.formLogin(AbstractHttpConfigurer::disable) // 기본 로그인 페이지 비활성화
 			.httpBasic(AbstractHttpConfigurer::disable) // 기본 인증 비활성화
 			.authorizeHttpRequests(auth -> auth
+				.requestMatchers( // 회원가입, 로그인, 이메일 인증은 누구나 접근 가능
+					"/api/users/login",
+					"/api/users/register",
+					"/api/users/email-exists"
+				).permitAll()
 				.requestMatchers("/api/reservations").authenticated() // 예약하려면 인증 필요
-				.requestMatchers("/api/me/**", "/api/users/me/**").authenticated() // 마이페이지 가려면 인증 필요
+				.requestMatchers("/api/me/**", "/api/users/**").authenticated() // 마이페이지 가려면 인증 필요
 				.anyRequest().permitAll() // 나머지는 전부 허용
 			)
 			.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
