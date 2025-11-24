@@ -3,9 +3,12 @@ package com.travelers.gotravelserver.domain.user;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.travelers.gotravelserver.domain.user.dto.ApiResponse;
 import com.travelers.gotravelserver.domain.user.dto.PasswordVerifyRequest;
 import com.travelers.gotravelserver.domain.user.dto.PasswordVerifyResponse;
+import com.travelers.gotravelserver.global.security.CustomUserDetails;
 import com.travelers.gotravelserver.global.security.JwtTokenProvider;
+
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +50,7 @@ public class UserController {
 		User user = userService.login(req);
         UserResponse userResponse = UserResponse.from(user);
 
-        String token = jwtTokenProvider.createToken(userResponse.getEmail(),userResponse.getName());
+        String token = jwtTokenProvider.createToken(userResponse.getEmail(),userResponse.getName(), userResponse.getPhone());
         response.setHeader("Set-Cookie",
                 "token=" + token +
                         "; Path=/; Max-Age=" + (60*30) + // 30분
@@ -75,6 +78,7 @@ public class UserController {
 		return ResponseEntity.ok(UserResponse.from(updated));
 	}
 
+	// 비밀번호 인증
 	@PostMapping("/me/password/verify")
 	public ResponseEntity<PasswordVerifyResponse> verifyPassword(
 		@AuthenticationPrincipal UserDetails userDetails,
@@ -95,6 +99,28 @@ public class UserController {
 		);
 
 		return ResponseEntity.ok(response);
+	}
+
+	// 비밀번호 변경
+	@PatchMapping("/me/password")
+	public ResponseEntity<ApiResponse<String>> changePassword(
+		@AuthenticationPrincipal CustomUserDetails userDetails,
+		@RequestBody UserUpdateRequest req
+	) {
+		// 로그인 사용자 id 가져오기
+		Long userId = userDetails.getUser().getId();
+
+		// 비밀번호 변경용 UserUpdateRequest 생성
+		UserUpdateRequest updateReq = UserUpdateRequest.builder()
+			.currentPassword(req.getCurrentPassword())
+			.newPassword(req.getNewPassword())
+			.build();
+
+		// 서비스 호출
+		userService.update(userId, updateReq);
+
+		// 응답 반환
+		return ResponseEntity.ok(new ApiResponse<>(true, null, "비밀번호가 변경되었습니다."));
 	}
 
 	// 이메일 중복 확인

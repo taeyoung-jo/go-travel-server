@@ -48,7 +48,7 @@ public class User extends BaseTimeEntity {
 	public void changeInfo(UserUpdateRequest req, PasswordEncoder encoder) {
 		if (req.getPhone() != null)
 			this.phone = req.getPhone();
-		if (req.getPassword() != null)
-			this.password = encoder.encode(req.getPassword());
+		if (req.getNewPassword() != null && !req.getNewPassword().isBlank())
+			this.password = encoder.encode(req.getNewPassword());
 	}
 }
